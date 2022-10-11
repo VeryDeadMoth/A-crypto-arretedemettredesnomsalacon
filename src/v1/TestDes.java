@@ -6,9 +6,9 @@ public class TestDes {
 		// TODO Auto-generated method stub
 		DES d = new DES();
 		
-		int[] wow = d.stringToBits("hi");
+		int[] wow = d.generePermutation();
 		for(int i : wow) {
-			System.out.print(i);
+			System.out.print(i + " ");
 		}
 		
 	}
