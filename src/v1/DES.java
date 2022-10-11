@@ -53,10 +53,12 @@ public class DES {
 		int[] res;
 		String strBinary ="";
 		
+		//passage de bytes à string de bits
 		for(byte b : strBytes) {
 			strBinary += String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');;
 		}
 		
+		//passage de string à liste de int
 		res = new int[strBinary.length()];
 		for(int k = 0 ; k<strBinary.length();k++) {
 			res[k]=Character.getNumericValue(strBinary.charAt(k));
@@ -68,9 +70,23 @@ public class DES {
 	
 	public String bitsToString(int[] blocs) {
 		int nbFor = blocs.length /8;
+		
+		//convertir liste de int en string
+		/*StringBuilder strBits = new StringBuilder("");
+		strBits.append(blocs);*/
+		
+		//découpage du string en substring de taille 8
+		String[] strBytes = new String[nbFor]; 
+		
 		for(int k = 0 ; k < nbFor ; k++) {
-			
+			//strBytes[k] = strBits.substring(k*8,k*8 +8);
 		}
+		
+		
+		byte b = Byte.parseByte(strBytes[0],2);
+		byte[] test = {b};
+		System.out.println(new String(test));
+		
 		
 		return null;
 	}
