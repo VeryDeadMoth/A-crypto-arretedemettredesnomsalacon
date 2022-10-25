@@ -2,7 +2,9 @@ package v1;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Queue;
 
@@ -17,7 +19,8 @@ public class DES {
 	int nb_ronde = 1;
 	//tab_decalage consid�r�e constante pour l'instant
 	int[] tab_decalage = {1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
-	int [] perm_initiale = {58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7};
+	ArrayList<Integer>  perm_initiale = new ArrayList<Integer>(List.of(58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7));
+	
 	int [] S = {14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7,0,15,7,4,14,2,13,1,10,6,12,11,9,5,3,8,4,1,14,8,13,6,2,11,15,12,9,7,3,10,5,0,15,12,8,2,4,9,1,7,5,11,3,14,10,0,6,13};
 	int [] E = {32,1,2,3,4,5,4,5,6,7,8,9,8,9,10,11,12,13,12,13,14,15,16,17,16,17,18,19,20,21,20,21,22,23,24,25,24,25,26,27,28,29,28,29,30,31,32,1};
 	
@@ -110,21 +113,33 @@ public class DES {
 	}
 	
 	public ArrayList<ArrayList<Integer>> decoupage(ArrayList<Integer> block, int nbBlock){
-		
-		ArrayList<ArrayList<Integer>> myTab = new ArrayList<ArrayList<Integer>>();
-		while (block.size() % nbBlock != 0) {
-			block.add(0);
+		ArrayList<Integer>blCopy = new ArrayList<Integer>();
+		for(int i : block) {
+			blCopy.add(i);
 		}
 		
-		while(block.size()>0) {
+		ArrayList<ArrayList<Integer>> myTab = new ArrayList<ArrayList<Integer>>();
+		while (blCopy.size() % nbBlock != 0) {
+			blCopy.add(0);
+		}
+		
+		while(blCopy.size()>0) {
 			ArrayList<Integer> aBlock = new ArrayList<>();
 			for(int i=0; i<nbBlock; i++) {
-				aBlock.add(block.remove(0));
+				aBlock.add(blCopy.remove(0));
 			}
 			myTab.add(aBlock);
 		}
 		
 		return myTab;
+	}
+	
+	public ArrayList<Integer> permutation(ArrayList<Integer> block, ArrayList<Integer> perm){
+		ArrayList<Integer> blPerm = new ArrayList<Integer>();
+		for(int i = 0; i<perm.size(); i++) {
+			blPerm.add(block.get(perm.get(i)-1));
+		}
+		return blPerm;
 	}
 		
 }
