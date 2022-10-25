@@ -53,12 +53,12 @@ public class DES {
 		int[] res;
 		String strBinary ="";
 		
-		//passage de bytes à string de bits
+		//passage de bytes ï¿½ string de bits
 		for(byte b : strBytes) {
 			strBinary += String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');;
 		}
 		
-		//passage de string à liste de int
+		//passage de string ï¿½ liste de int
 		res = new int[strBinary.length()];
 		for(int k = 0 ; k<strBinary.length();k++) {
 			res[k]=Character.getNumericValue(strBinary.charAt(k));
@@ -75,7 +75,7 @@ public class DES {
 		/*StringBuilder strBits = new StringBuilder("");
 		strBits.append(blocs);*/
 		
-		//découpage du string en substring de taille 8
+		//dï¿½coupage du string en substring de taille 8
 		String[] strBytes = new String[nbFor]; 
 		
 		for(int k = 0 ; k < nbFor ; k++) {
@@ -107,6 +107,24 @@ public class DES {
 			perm[i] = t;
 		}
 		return perm;
+	}
+	
+	public ArrayList<ArrayList<Integer>> decoupage(ArrayList<Integer> block, int nbBlock){
+		
+		ArrayList<ArrayList<Integer>> myTab = new ArrayList<ArrayList<Integer>>();
+		while (block.size() % nbBlock != 0) {
+			block.add(0);
+		}
+		
+		while(block.size()>0) {
+			ArrayList<Integer> aBlock = new ArrayList<>();
+			for(int i=0; i<nbBlock; i++) {
+				aBlock.add(block.remove(0));
+			}
+			myTab.add(aBlock);
+		}
+		
+		return myTab;
 	}
 		
 }
