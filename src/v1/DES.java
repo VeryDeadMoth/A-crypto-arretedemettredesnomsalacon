@@ -150,5 +150,16 @@ public class DES {
 		}
 		return blPerm;
 	}
-		
+	
+	public ArrayList<Integer> recollage(ArrayList<ArrayList<Integer>> decoupTable){
+		ArrayList<Integer> tableRecolle = new ArrayList<Integer>();
+		for(ArrayList<Integer> i : decoupTable) {
+			for(int j :i) {
+				tableRecolle.add(j);
+			}
+		}
+		return tableRecolle;
+	}
+	
+	
 }
