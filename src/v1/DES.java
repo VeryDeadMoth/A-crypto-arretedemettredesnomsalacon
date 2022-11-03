@@ -112,20 +112,20 @@ public class DES {
 		return perm;
 	}
 	
-	public ArrayList<ArrayList<Integer>> decoupage(ArrayList<Integer> block, int nbBlock){
+	public ArrayList<ArrayList<Integer>> decoupage(ArrayList<Integer> block, int tailleBlock){
 		ArrayList<Integer>blCopy = new ArrayList<Integer>();
 		for(int i : block) {
 			blCopy.add(i);
 		}
 		
 		ArrayList<ArrayList<Integer>> myTab = new ArrayList<ArrayList<Integer>>();
-		while (blCopy.size() % nbBlock != 0) {
+		while (blCopy.size() % tailleBlock != 0) {
 			blCopy.add(0);
 		}
 		
 		while(blCopy.size()>0) {
 			ArrayList<Integer> aBlock = new ArrayList<>();
-			for(int i=0; i<nbBlock; i++) {
+			for(int i=0; i<tailleBlock; i++) {
 				aBlock.add(blCopy.remove(0));
 			}
 			myTab.add(aBlock);
@@ -138,6 +138,15 @@ public class DES {
 		ArrayList<Integer> blPerm = new ArrayList<Integer>();
 		for(int i = 0; i<perm.size(); i++) {
 			blPerm.add(block.get(perm.get(i)-1));
+		}
+		return blPerm;
+	}
+	
+	public ArrayList<Integer> invPermutation(ArrayList<Integer> block, ArrayList<Integer> perm){
+		ArrayList<Integer> blPerm = new ArrayList<Integer>();
+		for(int i = 1; i<perm.size()+1; i++) {
+			int ind = perm.indexOf(i);
+			blPerm.add(block.get(ind));
 		}
 		return blPerm;
 	}
