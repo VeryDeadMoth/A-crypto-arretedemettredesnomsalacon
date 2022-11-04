@@ -28,8 +28,8 @@ public class DES {
 	int [] E = {32,1,2,3,4,5,4,5,6,7,8,9,8,9,10,11,12,13,12,13,14,15,16,17,16,17,18,19,20,21,20,21,22,23,24,25,24,25,26,27,28,29,28,29,30,31,32,1};
 	
 	//VARIABLES
-	int[] masterKey;
-	int[] tab_cles;
+	ArrayList<Integer> masterKey;
+	ArrayList<ArrayList<Integer>> tab_cles;
 	
 	//EXTRA
 	/*public void TabToString(int[] tab) {
@@ -45,10 +45,10 @@ public class DES {
 	public DES() {
 		Random rnd = new Random();
 		
-		this.tab_cles = new int[nb_ronde];
-		this.masterKey = new int[taille_bloc];
+		this.tab_cles = new ArrayList<ArrayList<Integer>>();
+		this.masterKey = new ArrayList<Integer>();
 		for(int k = 0; k<taille_bloc;k++) {
-			this.masterKey[k]=rnd.nextInt(2);
+			this.masterKey.add(rnd.nextInt(2));
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class DES {
 		return str;}
 	
 	//generePermutation
-	public int[] generePermutation() {
+	/*public int[] generePermutation() {
 		int[] perm = new int[64];
 		LinkedList<Integer> init = new LinkedList<Integer>(); 
 		Random rand = new Random();
@@ -115,6 +115,17 @@ public class DES {
 			perm[i] = t;
 		}
 		return perm;
+	}*/
+	
+	public ArrayList<Integer> generePermutation(int taille) {
+		ArrayList<Integer> newPermutation = new ArrayList<Integer>();
+		for (int k = 1; k <= taille;k++) {
+			newPermutation.add(k);
+		}
+		
+		Collections.shuffle(newPermutation);
+		
+		return newPermutation;
 	}
 	
 	//decoupage
@@ -194,13 +205,19 @@ public class DES {
 	
 	//genereCle
 	public void genereCle(int n) {
+		
 		//key issue de la permutation de master key
+		ArrayList<Integer> key = permutation(this.masterKey,generePermutation(64));
+		
 		//retirer les 8 derniers bits
 		//découpage
-		//decallage
+		//decallage (tab decallage)
 		//collage
 		//permutation 2
 		//retirer les 8 derniers bits
+		
+		//stockage dans tab_clés
+		tab_cles.add(key);
 	}
 	
 }
