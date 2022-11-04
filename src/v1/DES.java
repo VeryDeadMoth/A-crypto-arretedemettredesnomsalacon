@@ -19,7 +19,7 @@ public class DES {
 	int nb_ronde = 1;
 	//tab_decalage considï¿½rï¿½e constante pour l'instant
 	int[] tab_decalage = {1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
-	ArrayList<Integer>  perm_initiale = new ArrayList<Integer>(List.of(58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7));
+	ArrayList<Integer> perm_initiale = new ArrayList<Integer>(List.of(58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7));
 	
 	int [] S = {14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7,0,15,7,4,14,2,13,1,10,6,12,11,9,5,3,8,4,1,14,8,13,6,2,11,15,12,9,7,3,10,5,0,15,12,8,2,4,9,1,7,5,11,3,14,10,0,6,13};
 	int [] E = {32,1,2,3,4,5,4,5,6,7,8,9,8,9,10,11,12,13,12,13,14,15,16,17,16,17,18,19,20,21,20,21,22,23,24,25,24,25,26,27,28,29,28,29,30,31,32,1};
@@ -29,16 +29,16 @@ public class DES {
 	int[] tab_cles;
 	
 	//EXTRA
-	public void TabToString(int[] tab) {
+	/*public void TabToString(int[] tab) {
 		String str = "[";
 		for(int i: tab) {
 			str+=i+", ";
 		}
 		//str.charAt(str.length()-1)="]";
 		System.out.println(str);
-	}
+	}*/
 	
-	//CONSTRUCTEUR
+	//CONSTRUCTEUR ******************************************************************************************
 	public DES() {
 		Random rnd = new Random();
 		
@@ -49,8 +49,9 @@ public class DES {
 		}
 	}
 	
-	//AUTRE FONCTIONS
-	//done
+	//AUTRE FONCTIONS ***************************************************************************************
+	
+	//stringToBits
 	public int[] stringToBits(String message) {
 		byte[] strBytes = message.getBytes();
 		int[] res;
@@ -70,34 +71,29 @@ public class DES {
 		return res;
 	}
 	
-	
+	//bitsToString
+	//https://stackoverflow.com/questions/4211705/binary-to-text-in-java
 	public String bitsToString(int[] blocs) {
 		int nbFor = blocs.length /8;
 		
-		//convertir liste de int en string
-		/*StringBuilder strBits = new StringBuilder("");
-		strBits.append(blocs);*/
+		String strBits="";
+		for(int k : blocs) {
+			strBits+=k;;
+		}
 		
-		//dï¿½coupage du string en substring de taille 8
+		//découpage du string en substring de taille 8
 		String[] strBytes = new String[nbFor]; 
 		
 		for(int k = 0 ; k < nbFor ; k++) {
-			//strBytes[k] = strBits.substring(k*8,k*8 +8);
-		}
+			strBytes[k] = strBits.substring(k*8,k*8 +8);
+		}		
 		
+		/*byte b = Byte.parseByte(strBytes[0],2);
+		byte[] test = {b};*/
 		
-		byte b = Byte.parseByte(strBytes[0],2);
-		byte[] test = {b};
-		System.out.println(new String(test));
-		
-		
-		return null;
-	}
+		return null;}
 	
-	public int[] crypte(String message_clair) {
-		return null;
-	}
-	
+	//generePermutation
 	public int[] generePermutation() {
 		int[] perm = new int[64];
 		LinkedList<Integer> init = new LinkedList<Integer>(); 
@@ -112,6 +108,7 @@ public class DES {
 		return perm;
 	}
 	
+	//decoupage
 	public ArrayList<ArrayList<Integer>> decoupage(ArrayList<Integer> block, int tailleBlock){
 		ArrayList<Integer>blCopy = new ArrayList<Integer>();
 		for(int i : block) {
@@ -134,6 +131,7 @@ public class DES {
 		return myTab;
 	}
 	
+	//permutation
 	public ArrayList<Integer> permutation(ArrayList<Integer> block, ArrayList<Integer> perm){
 		ArrayList<Integer> blPerm = new ArrayList<Integer>();
 		for(int i = 0; i<perm.size(); i++) {
@@ -142,6 +140,7 @@ public class DES {
 		return blPerm;
 	}
 	
+	//invPermutation
 	public ArrayList<Integer> invPermutation(ArrayList<Integer> block, ArrayList<Integer> perm){
 		ArrayList<Integer> blPerm = new ArrayList<Integer>();
 		for(int i = 1; i<perm.size()+1; i++) {
@@ -151,6 +150,7 @@ public class DES {
 		return blPerm;
 	}
 	
+	//recollage
 	public ArrayList<Integer> recollage(ArrayList<ArrayList<Integer>> decoupTable){
 		ArrayList<Integer> tableRecolle = new ArrayList<Integer>();
 		for(ArrayList<Integer> i : decoupTable) {
@@ -161,5 +161,26 @@ public class DES {
 		return tableRecolle;
 	}
 	
+	//decalle_gauche
+	public ArrayList<Integer> decalle_gauche(ArrayList<Integer> bloc, int nbCran){
+		
+		ArrayList<Integer> shiftedBloc = (ArrayList<Integer>) bloc.clone();
+		Collections.rotate(shiftedBloc,-nbCran);
+		
+		return shiftedBloc;
+	}
+	
+	//xor
+	//unclear - 
+	public ArrayList<Integer> xor(ArrayList<Integer> tab1, ArrayList<Integer> tab2){
+		
+		ArrayList<Integer> xorTab = new ArrayList<Integer>();
+		
+		for(int k = 0 ; k < tab1.size() ; k++) {
+			xorTab.add(tab1.get(k) ^ tab2.get(k));
+		}
+		
+		return xorTab;
+	}
 	
 }
