@@ -220,4 +220,8 @@ public class DES {
 		tab_cles.add(key);
 	}
 	
+	public void Crypte(String mess) {
+		
+	}
+	
 }
