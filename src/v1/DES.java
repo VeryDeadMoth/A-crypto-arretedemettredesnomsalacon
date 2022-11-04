@@ -81,7 +81,7 @@ public class DES {
 			strBits+=k;;
 		}
 		
-		//découpage du string en substring de taille 8
+		//dï¿½coupage du string en substring de taille 8
 		String[] strBytes = new String[nbFor]; 
 		
 		for(int k = 0 ; k < nbFor ; k++) {
@@ -150,8 +150,7 @@ public class DES {
 		return blPerm;
 	}
 	
-	//recollage
-	public ArrayList<Integer> recollage(ArrayList<ArrayList<Integer>> decoupTable){
+	public ArrayList<Integer> recollage_bloc(ArrayList<ArrayList<Integer>> decoupTable){
 		ArrayList<Integer> tableRecolle = new ArrayList<Integer>();
 		for(ArrayList<Integer> i : decoupTable) {
 			for(int j :i) {
