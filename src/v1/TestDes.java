@@ -1,6 +1,7 @@
 package v1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestDes {
 
@@ -46,6 +47,12 @@ public class TestDes {
 		System.out.println("genere clé :");
 		d.genereCle(0);
 		System.out.println(d.tab_cles.get(0));
+		
+		//fonction S
+		System.out.println("fonction S :");
+		ArrayList<Integer> bloc2 = new ArrayList<Integer>(List.of(1,1,0,1,1,1));
+		
+		System.out.println(d.fonction_S(bloc2));
 	}
 
 }

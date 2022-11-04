@@ -31,16 +31,6 @@ public class DES {
 	ArrayList<Integer> masterKey;
 	ArrayList<ArrayList<Integer>> tab_cles;
 	
-	//EXTRA
-	/*public void TabToString(int[] tab) {
-		String str = "[";
-		for(int i: tab) {
-			str+=i+", ";
-		}
-		//str.charAt(str.length()-1)="]";
-		System.out.println(str);
-	}*/
-	
 	//CONSTRUCTEUR ******************************************************************************************
 	public DES() {
 		Random rnd = new Random();
@@ -209,19 +199,51 @@ public class DES {
 		//key issue de la permutation de master key (retirer les 8 derniers bits)
 		ArrayList<Integer> key = permutation(new ArrayList<Integer>(this.masterKey.subList(0,56)),generePermutation(56));
 		
+		System.out.println("clé " + key);
+		
 		//découpage
 		ArrayList<Integer> splitKey1 = new ArrayList<Integer>(key.subList(0, 28));
 		ArrayList<Integer> splitKey2 = new ArrayList<Integer>(key.subList(28, 56));
+		
+		System.out.println("split 1 " + splitKey1);
+		System.out.println("split 2 " +splitKey2);
 		
 		//decallage (tab decallage)
 		splitKey1 = decalle_gauche(splitKey1,tab_decalage[n]);
 		splitKey2 = decalle_gauche(splitKey2,tab_decalage[n]);
 		
+		System.out.println("shifted split 1 " +splitKey1);
+		System.out.println("shifted split 2" +splitKey2);
+		
 		//collage
 		splitKey1.addAll(splitKey2);
 		
+		System.out.println("collage " +splitKey1);
+		
 		//permutation 2 (retirer les 8 derniers bits)+ stockage dans tab_clés
 		tab_cles.add(permutation(new ArrayList<Integer>(splitKey1.subList(0,48)),generePermutation(48)));
+	}
+	
+	//fonction S
+	public ArrayList<Integer> fonction_S(ArrayList<Integer> tab){
+		
+		String strLine = tab.get(0).toString() + tab.get(5);
+		String strColumn = "";
+		for (int i : tab.subList(1,5)) {
+			strColumn+=i;
+		}
+		
+		String newStr = Integer.toBinaryString(S[16*Integer.parseInt(strLine, 2) + Integer.parseInt(strColumn,2)]);
+		
+		System.out.println("fetched number from tab S");
+		System.out.println(newStr);
+		
+		ArrayList<Integer> newTab = new ArrayList<Integer>();
+		for(int k = 0; k<newStr.length();k++) {
+			newTab.add(Character.getNumericValue(newStr.charAt(k)));
+		}
+		
+		return newTab;
 	}
 	
 }
