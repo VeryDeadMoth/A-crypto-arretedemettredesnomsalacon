@@ -206,18 +206,22 @@ public class DES {
 	//genereCle
 	public void genereCle(int n) {
 		
-		//key issue de la permutation de master key
-		ArrayList<Integer> key = permutation(this.masterKey,generePermutation(64));
+		//key issue de la permutation de master key (retirer les 8 derniers bits)
+		ArrayList<Integer> key = permutation(new ArrayList<Integer>(this.masterKey.subList(0,56)),generePermutation(56));
 		
-		//retirer les 8 derniers bits
 		//découpage
-		//decallage (tab decallage)
-		//collage
-		//permutation 2
-		//retirer les 8 derniers bits
+		ArrayList<Integer> splitKey1 = new ArrayList<Integer>(key.subList(0, 28));
+		ArrayList<Integer> splitKey2 = new ArrayList<Integer>(key.subList(28, 56));
 		
-		//stockage dans tab_clés
-		tab_cles.add(key);
+		//decallage (tab decallage)
+		splitKey1 = decalle_gauche(splitKey1,tab_decalage[n]);
+		splitKey2 = decalle_gauche(splitKey2,tab_decalage[n]);
+		
+		//collage
+		splitKey1.addAll(splitKey2);
+		
+		//permutation 2 (retirer les 8 derniers bits)+ stockage dans tab_clés
+		tab_cles.add(permutation(new ArrayList<Integer>(splitKey1.subList(0,48)),generePermutation(48)));
 	}
 	
 }
