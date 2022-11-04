@@ -1,11 +1,14 @@
 package v1;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
+
 import java.util.Queue;
 
 //note : tab_permutation = [3,1,0,2]
@@ -73,25 +76,31 @@ public class DES {
 	
 	//bitsToString
 	//https://stackoverflow.com/questions/4211705/binary-to-text-in-java
+	public int sByteToInt(String bytes) {
+		int[] ref = {128,64,32,16,8,4,2,1};
+		int s = 0;
+		for(int i = 0; i<8;i++) {
+			if (bytes.charAt(i)=='1') {
+				s+=ref[i];
+			}
+		}
+		return s;
+	}
 	public String bitsToString(int[] blocs) {
-		int nbFor = blocs.length /8;
+		byte[] b = new byte[blocs.length];
 		
-		String strBits="";
-		for(int k : blocs) {
-			strBits+=k;;
+		
+		for(int i = 0; i<blocs.length/8; i++) {
+			String s ="";
+			for (int j = 0; j<8; j++) {
+				s += blocs[i*8+j];
+			}
+			
+			b[i] = (byte) sByteToInt(s);
 		}
 		
-		//d�coupage du string en substring de taille 8
-		String[] strBytes = new String[nbFor]; 
-		
-		for(int k = 0 ; k < nbFor ; k++) {
-			strBytes[k] = strBits.substring(k*8,k*8 +8);
-		}		
-		
-		/*byte b = Byte.parseByte(strBytes[0],2);
-		byte[] test = {b};*/
-		
-		return null;}
+		String str = new String(b, StandardCharsets.UTF_8);
+		return str;}
 	
 	//generePermutation
 	public int[] generePermutation() {

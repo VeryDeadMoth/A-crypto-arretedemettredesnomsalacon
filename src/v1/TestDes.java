@@ -6,31 +6,16 @@ public class TestDes {
 
 	public static void main(String[] args) {
 		DES d = new DES();
-
-		/*int[] wow = d.generePermutation();
-
+		int[] bitMsg = d.stringToBits("mes couilles sur ton front");
 		
-		d.bitsToString(wow);
-
-		for(int i : wow) {
-			System.out.print(i + " ");
-		}*/
-		
-		
-		//decalle gauche
-		
-		ArrayList<Integer> bloc1 = new ArrayList<Integer>();
-		int[] b1 = {1,0,1,0,0,1};
-		for (int b : b1) {
-			bloc1.add(b);
+		for(int i=0; i<bitMsg.length; i++) {
+			if(i%8 == 0) {
+				System.out.print(" ");
+			}
+			System.out.print(bitMsg[i]);
 		}
-		
-		ArrayList<Integer> shiftedBloc1 = d.decalle_gauche(bloc1,2);
-		
-		System.out.println(bloc1);
-		System.out.println(shiftedBloc1);
-		
 		System.out.println();
+		System.out.println(d.bitsToString(bitMsg));
 		
 	}
 
