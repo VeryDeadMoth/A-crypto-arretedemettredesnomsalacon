@@ -29,13 +29,23 @@ public class TestDes {
 		
 		ArrayList<Integer> shiftedBloc1 = d.decalle_gauche(bloc1,2);
 		
+		System.out.println("decalle gauche :");
 		System.out.println(bloc1);
 		System.out.println(shiftedBloc1);
 		
 		//xor
-		
+		System.out.println("xor :");
 		System.out.println(d.xor(bloc1,shiftedBloc1));
 		
+		//genere permutation
+		System.out.println("genere permutation :");
+		System.out.println(d.generePermutation(10));
+		System.out.println(d.generePermutation(10));
+		
+		//genere clé
+		System.out.println("genere clé :");
+		d.genereCle(0);
+		System.out.println(d.tab_cles.get(0));
 	}
 
 }
