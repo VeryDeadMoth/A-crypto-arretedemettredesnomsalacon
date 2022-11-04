@@ -224,6 +224,7 @@ public class DES {
 		tab_cles.add(permutation(new ArrayList<Integer>(splitKey1.subList(0,48)),generePermutation(48)));
 	}
 	
+<<<<<<< HEAD
 	//fonction S
 	public ArrayList<Integer> fonction_S(ArrayList<Integer> tab){
 		
@@ -244,6 +245,10 @@ public class DES {
 		}
 		
 		return newTab;
+=======
+	public void Crypte(String mess) {
+		
+>>>>>>> main
 	}
 	
 }
