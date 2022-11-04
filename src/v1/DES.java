@@ -45,10 +45,10 @@ public class DES {
 	public DES() {
 		Random rnd = new Random();
 		
-		tab_cles = new int[nb_ronde];
-		masterKey = new int[taille_bloc];
+		this.tab_cles = new int[nb_ronde];
+		this.masterKey = new int[taille_bloc];
 		for(int k = 0; k<taille_bloc;k++) {
-			masterKey[k]=rnd.nextInt(2);
+			this.masterKey[k]=rnd.nextInt(2);
 		}
 	}
 	
@@ -75,7 +75,6 @@ public class DES {
 	}
 	
 	//bitsToString
-	//https://stackoverflow.com/questions/4211705/binary-to-text-in-java
 	public int sByteToInt(String bytes) {
 		int[] ref = {128,64,32,16,8,4,2,1};
 		int s = 0;
@@ -86,6 +85,7 @@ public class DES {
 		}
 		return s;
 	}
+	
 	public String bitsToString(int[] blocs) {
 		byte[] b = new byte[blocs.length];
 		
@@ -159,6 +159,8 @@ public class DES {
 		return blPerm;
 	}
 	
+	//recollage_bloc
+	
 	public ArrayList<Integer> recollage_bloc(ArrayList<ArrayList<Integer>> decoupTable){
 		ArrayList<Integer> tableRecolle = new ArrayList<Integer>();
 		for(ArrayList<Integer> i : decoupTable) {
@@ -179,7 +181,6 @@ public class DES {
 	}
 	
 	//xor
-	//unclear - 
 	public ArrayList<Integer> xor(ArrayList<Integer> tab1, ArrayList<Integer> tab2){
 		
 		ArrayList<Integer> xorTab = new ArrayList<Integer>();
@@ -189,6 +190,17 @@ public class DES {
 		}
 		
 		return xorTab;
+	}
+	
+	//genereCle
+	public void genereCle(int n) {
+		//key issue de la permutation de master key
+		//retirer les 8 derniers bits
+		//découpage
+		//decallage
+		//collage
+		//permutation 2
+		//retirer les 8 derniers bits
 	}
 	
 }

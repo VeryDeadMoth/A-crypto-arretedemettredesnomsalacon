@@ -14,8 +14,27 @@ public class TestDes {
 			}
 			System.out.print(bitMsg[i]);
 		}
+
 		System.out.println();
 		System.out.println(d.bitsToString(bitMsg));
+		
+		
+		//decalle gauche
+		
+		ArrayList<Integer> bloc1 = new ArrayList<Integer>();
+		
+		for (int i : bitMsg) {
+			bloc1.add(i);
+		}
+		
+		ArrayList<Integer> shiftedBloc1 = d.decalle_gauche(bloc1,2);
+		
+		System.out.println(bloc1);
+		System.out.println(shiftedBloc1);
+		
+		//xor
+		
+		System.out.println(d.xor(bloc1,shiftedBloc1));
 		
 	}
 
