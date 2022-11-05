@@ -45,9 +45,8 @@ public class DES {
 	//AUTRE FONCTIONS ***************************************************************************************
 	
 	//stringToBits
-	public int[] stringToBits(String message) {
+	public ArrayList<Integer> stringToBits(String message) {
 		byte[] strBytes = message.getBytes();
-		int[] res;
 		String strBinary ="";
 		
 		//passage de bytes ï¿½ string de bits
@@ -56,9 +55,9 @@ public class DES {
 		}
 		
 		//passage de string ï¿½ liste de int
-		res = new int[strBinary.length()];
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		for(int k = 0 ; k<strBinary.length();k++) {
-			res[k]=Character.getNumericValue(strBinary.charAt(k));
+			res.add(Character.getNumericValue(strBinary.charAt(k)));
 		}
 		
 		return res;
@@ -93,20 +92,6 @@ public class DES {
 		return str;}
 	
 	//generePermutation
-	/*public int[] generePermutation() {
-		int[] perm = new int[64];
-		LinkedList<Integer> init = new LinkedList<Integer>(); 
-		Random rand = new Random();
-		for(int i =1; i<65; i++) {
-			init.add(i);
-		}
-		for (int i=0; i<64; i++) {
-			int t = init.remove(rand.nextInt(0, init.size()));
-			perm[i] = t;
-		}
-		return perm;
-	}*/
-	
 	public ArrayList<Integer> generePermutation(int taille) {
 		ArrayList<Integer> newPermutation = new ArrayList<Integer>();
 		for (int k = 1; k <= taille;k++) {
@@ -246,9 +231,53 @@ public class DES {
 		return newTab;
 	}
 	
-	public void Crypte(String mess) {
-		
+	//fonction F
+	public ArrayList<Integer> fonction_F(ArrayList<Integer> uneCle, ArrayList<Integer> unD){
+		return null;
+	}
 
+	public ArrayList<Integer> crypte(String message_clair) {
+		//changer en bits
+		ArrayList<Integer> messageBits = stringToBits(message_clair);
+		
+		//decoupage en blocs de 64 bits
+		ArrayList<ArrayList<Integer>> blocs64 = decoupage(messageBits,64);
+		
+		//pour chaque bloc :
+		ArrayList<Integer> Gn,Dn,Gn1,Dn1;
+		Gn1 = new ArrayList<Integer>();
+		Dn1 = new ArrayList<Integer>();
+		for(int k = 0; k<blocs64.size(); k++) {
+			//perm initiale
+			blocs64.set(k, permutation(blocs64.get(k),perm_initiale));
+			//decoupage en 2 blocs de 32
+			Gn = new ArrayList<Integer> (blocs64.get(k).subList(0,32));
+			Dn = new ArrayList<Integer> (blocs64.get(k).subList(32,64));
+			
+			//rondes
+			for(int i=0; i<nb_ronde;i++) {
+				//generation clé
+				genereCle(i);
+				Dn1= xor(Gn,fonction_F(tab_cles.get(i),Dn));
+				Gn1 = Dn;	
+			}
+			
+			//recollage en bloc de 64
+			Gn1.addAll(Dn1);
+			blocs64.set(k,Gn1);
+			
+			//perm inv
+			blocs64.set(k, invPermutation(blocs64.get(k),perm_initiale));
+		}
+		
+		//recomposition du message
+		return recollage_bloc(blocs64);
+	}
+	
+	public String decrypte(String message_code) {
+		
+		//meme chose que crypte mais the subkeys are applied in the reverse order when decrypting
+		return null;
 	}
 	
 }

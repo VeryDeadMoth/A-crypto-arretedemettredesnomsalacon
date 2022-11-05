@@ -7,18 +7,22 @@ public class TestDes {
 
 	public static void main(String[] args) {
 		DES d = new DES();
-		int[] bitMsg = d.stringToBits("mes couilles sur ton front");
+		ArrayList<Integer> bitMsg = d.stringToBits("mes couilles sur ton front");
 		
-		for(int i=0; i<bitMsg.length; i++) {
+		for(int i=0; i<bitMsg.size(); i++) {
 			if(i%8 == 0) {
 				System.out.print(" ");
 			}
-			System.out.print(bitMsg[i]);
+			System.out.print(bitMsg.get(i));
 		}
 
 		System.out.println();
-		System.out.println(d.bitsToString(bitMsg));
+		//System.out.println(d.bitsToString(bitMsg));
 		
+		//decoupage
+		System.out.println("decoupage :");
+		System.out.println(d.decoupage(bitMsg, 10));
+		System.out.println(d.decoupage(bitMsg, 8));
 		
 		//decalle gauche
 		
@@ -53,6 +57,9 @@ public class TestDes {
 		ArrayList<Integer> bloc2 = new ArrayList<Integer>(List.of(1,1,0,1,1,1));
 		
 		System.out.println(d.fonction_S(bloc2));
+		
+		//crypte
+		d.crypte("hi");
 	}
 
 }
