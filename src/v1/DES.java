@@ -242,9 +242,9 @@ public class DES {
 			Sldn.add(fonction_S(i));
 		}
 		
-		ArrayList<Integer> recoll� = recollage_bloc(Sldn);
+		ArrayList<Integer> recolle = recollage_bloc(Sldn);
 		
-		return recoll�;
+		return recolle;
 	}
 	
 	public void Crypte(String mess) {
