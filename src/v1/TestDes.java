@@ -59,7 +59,9 @@ public class TestDes {
 		System.out.println(d.fonction_S(bloc2));
 		
 		//crypte
-		d.crypte("hi");
+		System.out.println("crypte");
+		//System.out.println(d.crypte("hi"));
+		
 	}
 
 }

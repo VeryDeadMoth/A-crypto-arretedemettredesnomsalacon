@@ -75,14 +75,14 @@ public class DES {
 		return s;
 	}
 	
-	public String bitsToString(int[] blocs) {
-		byte[] b = new byte[blocs.length];
+	public String bitsToString(ArrayList<Integer> blocs) {
+		byte[] b = new byte[blocs.size()];
 		
 		
-		for(int i = 0; i<blocs.length/8; i++) {
+		for(int i = 0; i<blocs.size()/8; i++) {
 			String s ="";
 			for (int j = 0; j<8; j++) {
-				s += blocs[i*8+j];
+				s += blocs.get(i*8+j);
 			}
 			
 			b[i] = (byte) sByteToInt(s);
@@ -247,6 +247,7 @@ public class DES {
 		ArrayList<Integer> Gn,Dn,Gn1,Dn1;
 		Gn1 = new ArrayList<Integer>();
 		Dn1 = new ArrayList<Integer>();
+		
 		for(int k = 0; k<blocs64.size(); k++) {
 			//perm initiale
 			blocs64.set(k, permutation(blocs64.get(k),perm_initiale));
@@ -274,10 +275,41 @@ public class DES {
 		return recollage_bloc(blocs64);
 	}
 	
-	public String decrypte(String message_code) {
+	//decrypte
+	public String decrypte(ArrayList<Integer> message_code) {
+		//decoupage en blocs de 64 bits
+		ArrayList<ArrayList<Integer>> blocs64 = decoupage(message_code,64);
 		
-		//meme chose que crypte mais the subkeys are applied in the reverse order when decrypting
-		return null;
+		//pour chaque bloc :
+		ArrayList<Integer> Gn,Dn,Gn1,Dn1;
+		Gn1 = new ArrayList<Integer>();
+		Dn1 = new ArrayList<Integer>();
+		
+		for(int k = 0; k<blocs64.size(); k++) {
+			//perm initiale
+			blocs64.set(k, permutation(blocs64.get(k),perm_initiale));
+			//decoupage en 2 blocs de 32
+			Gn = new ArrayList<Integer> (blocs64.get(k).subList(0,32));
+			Dn = new ArrayList<Integer> (blocs64.get(k).subList(32,64));
+			
+			//rondes
+			for(int i=0; i<nb_ronde;i++) {
+				//generation clé
+				genereCle(i);
+				Dn1= Gn;
+				Gn1 = xor(Dn,fonction_F(tab_cles.get(i),Dn1));
+			}
+					
+			//recollage en bloc de 64 ************************************************** Dn1.addAll ? ou Gn1.addAll ??
+			Gn1.addAll(Dn1);
+			blocs64.set(k,Gn1);
+					
+			//perm inv
+			blocs64.set(k, invPermutation(blocs64.get(k),perm_initiale));
+		}
+				
+		//recomposition du message
+		return bitsToString(recollage_bloc(blocs64));
 	}
 	
 }
