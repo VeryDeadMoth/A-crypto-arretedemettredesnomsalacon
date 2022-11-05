@@ -45,9 +45,8 @@ public class DES {
 	//AUTRE FONCTIONS ***************************************************************************************
 	
 	//stringToBits
-	public int[] stringToBits(String message) {
+	public ArrayList<Integer> stringToBits(String message) {
 		byte[] strBytes = message.getBytes();
-		int[] res;
 		String strBinary ="";
 		
 		//passage de bytes ï¿½ string de bits
@@ -56,9 +55,9 @@ public class DES {
 		}
 		
 		//passage de string ï¿½ liste de int
-		res = new int[strBinary.length()];
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		for(int k = 0 ; k<strBinary.length();k++) {
-			res[k]=Character.getNumericValue(strBinary.charAt(k));
+			res.add(Character.getNumericValue(strBinary.charAt(k)));
 		}
 		
 		return res;
@@ -76,14 +75,14 @@ public class DES {
 		return s;
 	}
 	
-	public String bitsToString(int[] blocs) {
-		byte[] b = new byte[blocs.length];
+	public String bitsToString(ArrayList<Integer> blocs) {
+		byte[] b = new byte[blocs.size()];
 		
 		
-		for(int i = 0; i<blocs.length/8; i++) {
+		for(int i = 0; i<blocs.size()/8; i++) {
 			String s ="";
 			for (int j = 0; j<8; j++) {
-				s += blocs[i*8+j];
+				s += blocs.get(i*8+j);
 			}
 			
 			b[i] = (byte) sByteToInt(s);
@@ -93,20 +92,6 @@ public class DES {
 		return str;}
 	
 	//generePermutation
-	/*public int[] generePermutation() {
-		int[] perm = new int[64];
-		LinkedList<Integer> init = new LinkedList<Integer>(); 
-		Random rand = new Random();
-		for(int i =1; i<65; i++) {
-			init.add(i);
-		}
-		for (int i=0; i<64; i++) {
-			int t = init.remove(rand.nextInt(0, init.size()));
-			perm[i] = t;
-		}
-		return perm;
-	}*/
-	
 	public ArrayList<Integer> generePermutation(int taille) {
 		ArrayList<Integer> newPermutation = new ArrayList<Integer>();
 		for (int k = 1; k <= taille;k++) {
@@ -199,9 +184,9 @@ public class DES {
 		//key issue de la permutation de master key (retirer les 8 derniers bits)
 		ArrayList<Integer> key = permutation(new ArrayList<Integer>(this.masterKey.subList(0,56)),generePermutation(56));
 		
-		System.out.println("clé " + key);
+		System.out.println("clï¿½ " + key);
 		
-		//découpage
+		//dï¿½coupage
 		ArrayList<Integer> splitKey1 = new ArrayList<Integer>(key.subList(0, 28));
 		ArrayList<Integer> splitKey2 = new ArrayList<Integer>(key.subList(28, 56));
 		
@@ -220,7 +205,7 @@ public class DES {
 		
 		System.out.println("collage " +splitKey1);
 		
-		//permutation 2 (retirer les 8 derniers bits)+ stockage dans tab_clés
+		//permutation 2 (retirer les 8 derniers bits)+ stockage dans tab_clï¿½s
 		tab_cles.add(permutation(new ArrayList<Integer>(splitKey1.subList(0,48)),generePermutation(48)));
 	}
 	
@@ -257,14 +242,83 @@ public class DES {
 			Sldn.add(fonction_S(i));
 		}
 		
-		ArrayList<Integer> recollé = recollage_bloc(Sldn);
+		ArrayList<Integer> recollï¿½ = recollage_bloc(Sldn);
 		
-		return recollé;
+		return recollï¿½;
 	}
 	
 	public void Crypte(String mess) {
 		
-
+		//decoupage en blocs de 64 bits
+		ArrayList<ArrayList<Integer>> blocs64 = decoupage(messageBits,64);
+		
+		//pour chaque bloc :
+		ArrayList<Integer> Gn,Dn,Gn1,Dn1;
+		Gn1 = new ArrayList<Integer>();
+		Dn1 = new ArrayList<Integer>();
+		
+		for(int k = 0; k<blocs64.size(); k++) {
+			//perm initiale
+			blocs64.set(k, permutation(blocs64.get(k),perm_initiale));
+			//decoupage en 2 blocs de 32
+			Gn = new ArrayList<Integer> (blocs64.get(k).subList(0,32));
+			Dn = new ArrayList<Integer> (blocs64.get(k).subList(32,64));
+			
+			//rondes
+			for(int i=0; i<nb_ronde;i++) {
+				//generation clï¿½
+				genereCle(i);
+				Dn1= xor(Gn,fonction_F(tab_cles.get(i),Dn));
+				Gn1 = Dn;	
+			}
+			
+			//recollage en bloc de 64
+			Gn1.addAll(Dn1);
+			blocs64.set(k,Gn1);
+			
+			//perm inv
+			blocs64.set(k, invPermutation(blocs64.get(k),perm_initiale));
+		}
+		
+		//recomposition du message
+		return recollage_bloc(blocs64);
+	}
+	
+	//decrypte
+	public String decrypte(ArrayList<Integer> message_code) {
+		//decoupage en blocs de 64 bits
+		ArrayList<ArrayList<Integer>> blocs64 = decoupage(message_code,64);
+		
+		//pour chaque bloc :
+		ArrayList<Integer> Gn,Dn,Gn1,Dn1;
+		Gn1 = new ArrayList<Integer>();
+		Dn1 = new ArrayList<Integer>();
+		
+		for(int k = 0; k<blocs64.size(); k++) {
+			//perm initiale
+			blocs64.set(k, permutation(blocs64.get(k),perm_initiale));
+			//decoupage en 2 blocs de 32
+			Gn = new ArrayList<Integer> (blocs64.get(k).subList(0,32));
+			Dn = new ArrayList<Integer> (blocs64.get(k).subList(32,64));
+			
+			//rondes
+			for(int i=0; i<nb_ronde;i++) {
+				//generation clï¿½
+				genereCle(i);
+				Dn1= Gn;
+				Gn1 = xor(Dn,fonction_F(tab_cles.get(i),Dn1));
+			}
+					
+			//recollage en bloc de 64 ************************************************** Dn1.addAll ? ou Gn1.addAll ??
+			Gn1.addAll(Dn1);
+			blocs64.set(k,Gn1);
+					
+			//perm inv
+			blocs64.set(k, invPermutation(blocs64.get(k),perm_initiale));
+		}
+				
+		//recomposition du message
+		return bitsToString(recollage_bloc(blocs64));
 	}
 	
 }
