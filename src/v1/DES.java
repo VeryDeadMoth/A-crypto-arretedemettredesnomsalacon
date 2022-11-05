@@ -19,12 +19,12 @@ public class DES {
 	//CONSTANTES
 	int taille_bloc = 64;
 	int taille_sous_bloc = 32;
-	int nb_ronde = 1;
+	int nb_ronde = 16;
 	//tab_decalage consid�r�e constante pour l'instant
 	int[] tab_decalage = {1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
 	ArrayList<Integer> perm_initiale = new ArrayList<Integer>(List.of(58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7));
 	
-	int [] S = {14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7,0,15,7,4,14,2,13,1,10,6,12,11,9,5,3,8,4,1,14,8,13,6,2,11,15,12,9,7,3,10,5,0,15,12,8,2,4,9,1,7,5,11,3,14,10,0,6,13};
+	ArrayList<Integer> S = new ArrayList<Integer>(List.of(14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7,0,15,7,4,14,2,13,1,10,6,12,11,9,5,3,8,4,1,14,8,13,6,2,11,15,12,9,7,3,10,5,0,15,12,8,2,4,9,1,7,5,11,3,14,10,0,6,13));
 	ArrayList<Integer> E = new ArrayList<Integer>(List.of(32,1,2,3,4,5,4,5,6,7,8,9,8,9,10,11,12,13,12,13,14,15,16,17,16,17,18,19,20,21,20,21,22,23,24,25,24,25,26,27,28,29,28,29,30,31,32,1));
 	
 	//VARIABLES
@@ -184,26 +184,26 @@ public class DES {
 		//key issue de la permutation de master key (retirer les 8 derniers bits)
 		ArrayList<Integer> key = permutation(new ArrayList<Integer>(this.masterKey.subList(0,56)),generePermutation(56));
 		
-		System.out.println("cl� " + key);
+		//System.out.println("cl� " + key);
 		
 		//d�coupage
 		ArrayList<Integer> splitKey1 = new ArrayList<Integer>(key.subList(0, 28));
 		ArrayList<Integer> splitKey2 = new ArrayList<Integer>(key.subList(28, 56));
 		
-		System.out.println("split 1 " + splitKey1);
-		System.out.println("split 2 " +splitKey2);
+		//System.out.println("split 1 " + splitKey1);
+		//System.out.println("split 2 " +splitKey2);
 		
 		//decallage (tab decallage)
 		splitKey1 = decalle_gauche(splitKey1,tab_decalage[n]);
 		splitKey2 = decalle_gauche(splitKey2,tab_decalage[n]);
 		
-		System.out.println("shifted split 1 " +splitKey1);
-		System.out.println("shifted split 2" +splitKey2);
+		//System.out.println("shifted split 1 " +splitKey1);
+		//System.out.println("shifted split 2" +splitKey2);
 		
 		//collage
 		splitKey1.addAll(splitKey2);
 		
-		System.out.println("collage " +splitKey1);
+		//System.out.println("collage " +splitKey1);
 		
 		//permutation 2 (retirer les 8 derniers bits)+ stockage dans tab_cl�s
 		tab_cles.add(permutation(new ArrayList<Integer>(splitKey1.subList(0,48)),generePermutation(48)));
@@ -219,8 +219,7 @@ public class DES {
 		}
 		
 		String newStr = "";
-		newStr += String.format("%4s", Integer.toBinaryString(S[16*Integer.parseInt(strLine, 2) + Integer.parseInt(strColumn,2)])).replace(' ', '0');
-		
+		newStr += String.format("%4s", Integer.toBinaryString(S.get(16*Integer.parseInt(strLine, 2) + Integer.parseInt(strColumn,2)))).replace(' ', '0');
 		
 		//System.out.println("fetched number from tab S");
 		//System.out.println(newStr);
@@ -271,8 +270,9 @@ public class DES {
 			//rondes
 			for(int i=0; i<nb_ronde;i++) {
 				//generation cl�
+				//Collections.shuffle(S);
 				genereCle(i);
-				Dn1= xor(Gn,fonction_F(tab_cles.get(i),Dn));
+				Dn1= xor(Gn,fonction_F(tab_cles.get(i + k*nb_ronde),Dn));
 				Gn1 = Dn;	
 			}
 			
@@ -296,7 +296,7 @@ public class DES {
 		//pour chaque bloc :
 		ArrayList<Integer> Gn,Dn,Gn1,Dn1;
 		Gn1 = new ArrayList<Integer>();
-		Dn1 = new ArrayList<Integer>();
+		Dn1 = new ArrayList<Integer>();;
 		
 		for(int k = 0; k<blocs64.size(); k++) {
 			//perm initiale
@@ -307,10 +307,8 @@ public class DES {
 			
 			//rondes
 			for(int i=0; i<nb_ronde;i++) {
-				//generation cl�
-				genereCle(i);
 				Dn1= Gn;
-				Gn1 = xor(Dn,fonction_F(tab_cles.get(i),Dn1));
+				Gn1 = xor(Dn,fonction_F(tab_cles.get(i + k*nb_ronde),Dn1));
 			}
 					
 			//recollage en bloc de 64 ************************************************** Dn1.addAll ? ou Gn1.addAll ??
@@ -320,7 +318,6 @@ public class DES {
 			//perm inv
 			blocs64.set(k, invPermutation(blocs64.get(k),perm_initiale));
 		}
-				
 		//recomposition du message
 		return bitsToString(recollage_bloc(blocs64));
 	}

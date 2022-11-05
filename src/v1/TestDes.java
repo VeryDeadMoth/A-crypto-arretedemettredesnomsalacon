@@ -58,11 +58,13 @@ public class TestDes {
 		
 		System.out.println(d.fonction_S(bloc2));
 		
-		//crypte
-		System.out.println("crypte");
-		ArrayList<Integer> cryptedMessage = d.crypte("hi");
-		System.out.println("crypte :" + cryptedMessage);
-		System.out.println("decrypte : " + d.decrypte(cryptedMessage));
+		//crypte/decrypte
+		DES d1 = new DES();
+		
+		System.out.println("crypte :");
+		ArrayList<Integer> cryptedMessage = d1.crypte("hello world - wow, a bunch of text");
+		//System.out.println("crypte :" + cryptedMessage);
+		System.out.println("decrypte : " + d1.decrypte(cryptedMessage));
 		
 	}
 
