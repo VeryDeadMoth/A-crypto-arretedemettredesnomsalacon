@@ -60,7 +60,9 @@ public class TestDes {
 		
 		//crypte
 		System.out.println("crypte");
-		//System.out.println(d.crypte("hi"));
+		ArrayList<Integer> cryptedMessage = d.crypte("hi");
+		System.out.println("crypte :" + cryptedMessage);
+		System.out.println("decrypte : " + d.decrypte(cryptedMessage));
 		
 	}
 

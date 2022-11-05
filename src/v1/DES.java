@@ -51,7 +51,7 @@ public class DES {
 		
 		//passage de bytes � string de bits
 		for(byte b : strBytes) {
-			strBinary += String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');;
+			strBinary += String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
 		}
 		
 		//passage de string � liste de int
@@ -218,10 +218,12 @@ public class DES {
 			strColumn+=i;
 		}
 		
-		String newStr = Integer.toBinaryString(S[16*Integer.parseInt(strLine, 2) + Integer.parseInt(strColumn,2)]);
+		String newStr = "";
+		newStr += String.format("%4s", Integer.toBinaryString(S[16*Integer.parseInt(strLine, 2) + Integer.parseInt(strColumn,2)])).replace(' ', '0');
 		
-		System.out.println("fetched number from tab S");
-		System.out.println(newStr);
+		
+		//System.out.println("fetched number from tab S");
+		//System.out.println(newStr);
 		
 		ArrayList<Integer> newTab = new ArrayList<Integer>();
 		for(int k = 0; k<newStr.length();k++) {
@@ -231,6 +233,7 @@ public class DES {
 		return newTab;
 	}
 	
+	//fonction F
 	public ArrayList<Integer> fonction_F (ArrayList<Integer> cle, ArrayList<Integer> D)
 	{
 		ArrayList<Integer> DnPrime = permutation(D, E);
@@ -247,8 +250,9 @@ public class DES {
 		return recolle;
 	}
 	
-	public void Crypte(String mess) {
-		
+	public ArrayList<Integer> crypte(String message_clair) {
+		//changer en bits
+		ArrayList<Integer> messageBits = stringToBits(message_clair);
 		//decoupage en blocs de 64 bits
 		ArrayList<ArrayList<Integer>> blocs64 = decoupage(messageBits,64);
 		
