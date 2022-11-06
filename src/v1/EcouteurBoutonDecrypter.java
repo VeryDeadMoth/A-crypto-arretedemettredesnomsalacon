@@ -2,6 +2,7 @@ package v1;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -17,7 +18,11 @@ public class EcouteurBoutonDecrypter implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		g.decrypteMessage();
+		try {
+			g.decrypteMessage();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
 	}
 

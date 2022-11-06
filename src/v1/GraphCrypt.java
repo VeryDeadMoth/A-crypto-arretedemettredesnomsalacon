@@ -3,14 +3,22 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 
@@ -39,7 +47,7 @@ public class GraphCrypt extends JFrame{
 		
 		b1.addMouseListener(new EcouteurBoutonCrypter(this));
 		b2.addMouseListener(new EcouteurBoutonDecrypter(this));
-		b3.addMouseListener(new Copy(l3));
+		b3.addMouseListener(new Copy(l3,this));
 		
 		p1.add(l1);
 		p3.add(jt1);
@@ -69,6 +77,19 @@ public class GraphCrypt extends JFrame{
 	
 	public static void main(String[] args) {
 		GraphCrypt c = new GraphCrypt();
+	}
+	
+	public void deserialisation(String fileName) throws IOException {
+		
+		Path pathOfFile = Path.of(fileName);
+		String temporaryFileString = Files.readString(pathOfFile);
+		
+		Gson gson = new Gson();
+		
+		java.lang.reflect.Type type = new TypeToken<HashMap<Integer,ArrayList<ArrayList<Integer>>>>(){}.getType();
+		
+		this.keys = gson.fromJson(temporaryFileString, type);
+		System.out.println(keys);
 	}
 	
 	public void crypteMessage() {
@@ -107,7 +128,16 @@ public class GraphCrypt extends JFrame{
 		l3.setText(crStr3);
 	}
 	
-	public void decrypteMessage() {
+	
+	public void decrypteMessage() throws IOException {
+		
+		//SELECTION DE LA CLE
+		JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+		
+        //JSON DECODE
+        deserialisation(chooser.getSelectedFile().toString());
+        
 		this.d1.tab_cles = this.keys.get(1);
 		this.d2.tab_cles = this.keys.get(2);
 		this.d3.tab_cles = this.keys.get(3);
