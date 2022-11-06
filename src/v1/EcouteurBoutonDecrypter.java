@@ -2,6 +2,7 @@ package v1;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -17,12 +18,21 @@ public class EcouteurBoutonDecrypter implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		/*DES d = new DES(); 
+		DES d = new DES(); 
 		String str = jt.getText();
-		String out = d.Decrypte(str);
-		l.setText(out);*/
+		str = str.replace(" ", "");
+		str = str.replace(",", "");
+		str = str.replace("[", "");
+		str = str.replace("]", "");
 		
-		l.setText("bbb");
+		ArrayList<Integer> input = new ArrayList<Integer>();
+		for(int i=0; i<str.length(); i++) {
+			input.add( Integer.parseInt(String.valueOf(str.charAt(i))));
+		}
+		String out = d.decrypte(input);
+		l.setText(out);
+		
+		
 		
 	}
 

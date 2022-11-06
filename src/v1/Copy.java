@@ -1,29 +1,28 @@
 package v1;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
-public class EcouteurBoutonCrypter implements MouseListener{
-	
-	private JTextField jt;
+
+
+public class Copy implements MouseListener{
 	private JLabel l;
 	
-	public EcouteurBoutonCrypter(JTextField jt, JLabel l) {
-		this.jt = jt;
+	public Copy(JLabel l) {
 		this.l = l;
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		DES d = new DES(); 
-		String str = jt.getText();
-		ArrayList<Integer> out = d.crypte(str);
-		l.setText(out.toString());
-		
-		
+		String myString = l.getText();
+		StringSelection stringSelection = new StringSelection(myString);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
 		
 	}
 
@@ -50,5 +49,6 @@ public class EcouteurBoutonCrypter implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 }
