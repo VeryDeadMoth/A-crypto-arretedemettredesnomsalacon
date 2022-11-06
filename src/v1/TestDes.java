@@ -7,7 +7,7 @@ public class TestDes {
 
 	public static void main(String[] args) {
 		DES d = new DES();
-		ArrayList<Integer> bitMsg = d.stringToBits("mes couilles sur ton front");
+		ArrayList<Integer> bitMsg = d.stringToBits("test");
 		
 		for(int i=0; i<bitMsg.size(); i++) {
 			if(i%8 == 0) {
