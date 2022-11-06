@@ -308,7 +308,7 @@ public class DES {
 			//rondes
 			for(int i=0; i<nb_ronde;i++) {
 				Dn1= Gn;
-				Gn1 = xor(Dn,fonction_F(tab_cles.get(i + k*nb_ronde),Dn1));
+				Gn1 = xor(Dn,fonction_F(tab_cles.get(i + k*nb_ronde ),Dn1));
 			}
 					
 			//recollage en bloc de 64 ************************************************** Dn1.addAll ? ou Gn1.addAll ??

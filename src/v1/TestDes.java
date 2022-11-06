@@ -62,10 +62,47 @@ public class TestDes {
 		DES d1 = new DES();
 		
 		System.out.println("crypte :");
-		ArrayList<Integer> cryptedMessage = d1.crypte("hello world - wow, a bunch of text");
+		ArrayList<Integer> cryptedMessage = d1.crypte("hello world");
 		//System.out.println("crypte :" + cryptedMessage);
 		System.out.println("decrypte : " + d1.decrypte(cryptedMessage));
 		
+		
+		//triple DES
+		DES d2 = new DES();
+		DES d3 = new DES();
+		
+		String crStr = "";
+		String cr2Str = "";
+		
+		for(int i : cryptedMessage) {
+			crStr+=i;
+		}
+		
+		ArrayList<Integer> cryptedMessage2 = d2.crypte(crStr);
+		
+		for(int i : cryptedMessage2) {
+			cr2Str+=i;
+		}
+		
+		ArrayList<Integer> cryptedMessage3 = d3.crypte(cr2Str);
+
+		
+		System.out.println("triple DES");
+		
+		String str3 = d3.decrypte(cryptedMessage3);
+		ArrayList<Integer> decryptedMessage3 = new ArrayList<Integer>();
+		for(int k = 0 ; k<cr2Str.length();k++) {
+			decryptedMessage3.add(Character.getNumericValue(str3.charAt(k)));
+		}
+		
+		
+		String str2 = d2.decrypte(decryptedMessage3);
+		ArrayList<Integer> decryptedMessage2 = new ArrayList<Integer>();
+		for(int k = 0 ; k<crStr.length();k++) {
+			decryptedMessage2.add(Character.getNumericValue(str2.charAt(k)));
+		}
+		
+		System.out.println(d1.decrypte(decryptedMessage2));
 	}
 
 }
