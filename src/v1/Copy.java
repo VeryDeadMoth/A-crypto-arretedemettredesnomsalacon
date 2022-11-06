@@ -1,11 +1,16 @@
 package v1;
 
+import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 
@@ -23,6 +28,13 @@ public class Copy implements MouseListener{
 		StringSelection stringSelection = new StringSelection(myString);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
+		
+		JFileChooser fileChooser = new JFileChooser();
+		if (fileChooser.showSaveDialog(l) == JFileChooser.APPROVE_OPTION) {
+		  File file = fileChooser.getSelectedFile();
+		  
+		  // save to file
+		}
 		
 	}
 
