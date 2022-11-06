@@ -89,7 +89,6 @@ public class GraphCrypt extends JFrame{
 		java.lang.reflect.Type type = new TypeToken<HashMap<Integer,ArrayList<ArrayList<Integer>>>>(){}.getType();
 		
 		this.keys = gson.fromJson(temporaryFileString, type);
-		System.out.println(keys);
 	}
 	
 	public void crypteMessage() {

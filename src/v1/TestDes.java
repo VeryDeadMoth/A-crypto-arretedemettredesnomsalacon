@@ -6,6 +6,7 @@ import java.util.List;
 public class TestDes {
 
 	public static void main(String[] args) {
+		//bitsToString et stringToBits
 		DES d = new DES();
 		ArrayList<Integer> bitMsg = d.stringToBits("test");
 		
@@ -17,12 +18,27 @@ public class TestDes {
 		}
 
 		System.out.println();
-		//System.out.println(d.bitsToString(bitMsg));
+		System.out.println(d.bitsToString(bitMsg));
 		
 		//decoupage
 		System.out.println("decoupage :");
 		System.out.println(d.decoupage(bitMsg, 10));
 		System.out.println(d.decoupage(bitMsg, 8));
+		
+		//recollage_bloc
+		System.out.println("recollage_bloc :");
+		System.out.println(d.decoupage(bitMsg, 3));
+		System.out.println(d.recollage_bloc(d.decoupage(bitMsg, 3)));
+		
+		//genere permutation
+		System.out.println("generePermutation :");
+		ArrayList<Integer> perm = d.generePermutation(bitMsg.size());
+		System.out.println(perm);
+		
+		//permutation / invPermutation
+		System.out.println("permutation /invPermutation");
+		System.out.println(d.permutation(bitMsg, perm));
+		System.out.println(d.invPermutation(bitMsg, perm));
 		
 		//decalle gauche
 		
@@ -60,10 +76,8 @@ public class TestDes {
 		
 		//crypte/decrypte
 		DES d1 = new DES();
-		
-		System.out.println("crypte :");
 		ArrayList<Integer> cryptedMessage = d1.crypte("hello world");
-		//System.out.println("crypte :" + cryptedMessage);
+		System.out.println("crypte :" + cryptedMessage);
 		System.out.println("decrypte : " + d1.decrypte(cryptedMessage));
 		
 		
