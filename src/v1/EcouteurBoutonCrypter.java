@@ -8,22 +8,15 @@ import javax.swing.JTextField;
 
 public class EcouteurBoutonCrypter implements MouseListener{
 	
-	private JTextField jt;
-	private JLabel l;
-	
-	public EcouteurBoutonCrypter(JTextField jt, JLabel l) {
-		this.jt = jt;
-		this.l = l;
+	public GraphCrypt g;
+
+	public EcouteurBoutonCrypter(GraphCrypt g) {
+		this.g = g;
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		DES d = new DES(); 
-		String str = jt.getText();
-		ArrayList<Integer> out = d.crypte(str);
-		l.setText(out.toString());
-		
-		
+		g.crypteMessage();
 		
 	}
 

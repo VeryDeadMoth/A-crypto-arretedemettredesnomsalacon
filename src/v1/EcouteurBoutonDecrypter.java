@@ -8,31 +8,16 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class EcouteurBoutonDecrypter implements MouseListener {
-	private JTextField jt;
-	private JLabel l;
 	
-	public EcouteurBoutonDecrypter(JTextField jt, JLabel l) {
-		this.jt = jt;
-		this.l = l;
+	public GraphCrypt g;
+	
+	public EcouteurBoutonDecrypter(GraphCrypt g) {
+		this.g = g;
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		DES d = new DES(); 
-		String str = jt.getText();
-		str = str.replace(" ", "");
-		str = str.replace(",", "");
-		str = str.replace("[", "");
-		str = str.replace("]", "");
-		
-		ArrayList<Integer> input = new ArrayList<Integer>();
-		for(int i=0; i<str.length(); i++) {
-			input.add( Integer.parseInt(String.valueOf(str.charAt(i))));
-		}
-		String out = d.decrypte(input);
-		l.setText(out);
-		
-		
+		g.decrypteMessage();
 		
 	}
 

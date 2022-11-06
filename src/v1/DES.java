@@ -322,4 +322,5 @@ public class DES {
 		return bitsToString(recollage_bloc(blocs64));
 	}
 	
+	
 }
